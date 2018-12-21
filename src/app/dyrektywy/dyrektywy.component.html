@@ -1,0 +1,24 @@
+<p *ngFor="let day of days;let i = even">
+  <li *ngIf="i">
+  {{i}}, {{day}}
+  </li>
+</p>
+<div *ngIf="dog.length > 0; else noDogs">
+
+    <div *ngFor="let d of dog">
+        <div *ngIf="d.age > 5">
+        {{d.name}}
+      </div>
+    </div>
+
+</div>
+<ng-template #noDogs>
+  <p>Psof ni ma</p>
+</ng-template>
+<button (click)="addDog()">Dodaj</button>
+<button (click)="removeDog()">Usun</button>
+<div *ngFor="let day of days">
+    <div [ngSwitch]="day">
+      <div *ngSwitchCase="'mon'">Montag</div>
+      <div *ngSwitchDefault>Ich habe keine anung</div>
+</div>

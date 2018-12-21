@@ -1,0 +1,9 @@
+<div>
+  <p> Wykonanie zadanie {{donetask.length}}</p>
+    <div *ngFor="let task of donetask">
+      <ul>
+        <li appChecked appDate [date]="task.end">{{task.name | tranformTask: ' -super!'}}</li>
+      </ul>
+    </div>
+
+</div>

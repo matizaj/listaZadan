@@ -1,0 +1,8 @@
+<h3 [ngClass]="color">Test</h3>
+<input [value]="data">{{data}}
+<div>
+    <input [(ngModel)]="binding2Way">
+    {{binding2Way}}
+</div>
+
+<button [disabled]="!isDisable" (click)="changeProp()">Zmien</button>

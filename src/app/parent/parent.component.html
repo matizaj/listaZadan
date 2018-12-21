@@ -1,0 +1,3 @@
+<input #inputText>
+<button (click)="add(inputText)">Dodaj</button>
+<app-child #childref [tasks]="tasksList" (eventTask)="selected($event)"></app-child>
