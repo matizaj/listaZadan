@@ -5,14 +5,14 @@ import { PARAMETERS } from '@angular/core/src/util/decorators';
   selector: '[appDate]'
 })
 export class DateDirective {
-  @Input() private date: Date;
+  @Input() private date: string;
   // <p>
   private paragraph;
   constructor(private el: ElementRef, private renderer: Renderer2) {
     this.paragraph = this.renderer.createElement('p');
   }
   @HostListener('mouseenter') mousEnter(eventDate: Event) {
-    this.paragraph.innerHTML = this.date.toLocaleDateString();
+    this.paragraph.innerHTML = this.date;
     this.renderer.appendChild(this.el.nativeElement, this.paragraph);
   }
 

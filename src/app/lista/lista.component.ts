@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { TaskService } from '../_services/task.service';
 
 @Component({
   selector: 'app-lista',
@@ -7,8 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ListaComponent implements OnInit {
 
+  constructor(private taskService: TaskService) {}
   ngOnInit() {
 
   }
-
+  saveTasks() {
+    this.taskService.savetasksInDb();
+  }
 }

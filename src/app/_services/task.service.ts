@@ -1,55 +1,68 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { Task } from '../_model/task';
+import { HttpService } from './http.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TaskService {
 
-  private taskList: Array<Task> = new Array<Task>();
-  private donetask: Array<Task> = [];
+  // private taskList: Array<Task> = new Array<Task>();
+  // private donetask: Array<Task> = [];
   private taskListObs = new BehaviorSubject<Array<Task>>([]); // lub inicjalizuj pustalista  []
   // private taskListObs = new Subject<Array<string>>();
-  private taskDoneObs = new BehaviorSubject<Array<Task>>([]);
+  // private taskDoneObs = new BehaviorSubject<Array<Task>>([]);
 
-  constructor() {
-    console.log('taskService service');
-    this.taskList = [
-      {name: 'wspinanie', created: new Date()},
-      {name: 'programowanie', created: new Date()},
-      {name: 'spanie', created: new Date()},
-      {name: 'jedzenie', created: new Date()}
-    ];
-    this.taskListObs.next(this.taskList);
+  constructor(private httpService: HttpService) {
+    // console.log('taskService service');
+    // const taskList = [
+    //   {name: 'wspinanie', created: new Date().toLocaleString(), isDone: false},
+    //   {name: 'programowanie', created: new Date().toLocaleString(), isDone: false},
+    //   {name: 'spanie', created: new Date().toLocaleString(), isDone: false},
+    //   {name: 'jedzenie', created: new Date().toLocaleString(), isDone: false},
+    //   {name: 'c#', created: new Date().toLocaleString(), end: new Date().toLocaleString(), isDone: true}
+    // ];
+    // this.taskListObs.next(taskList);
+    this.httpService.getTask().subscribe(data => {
+      this.taskListObs.next(data);
+    });
    }
 
-   add(task: Task) {
-    this.taskList.push(task);
-    this.taskListObs.next(this.taskList);
+   add(task: Array<Task>) {
+    const list = this.taskListObs.getValue().concat(task);
+    this.taskListObs.next(list);
    }
 
   remove(task: Task) {
-    this.taskList = this.taskList.filter(e => e !== task);
-    this.taskListObs.next(this.taskList);
+    const list = this.taskListObs.getValue().filter(e => e !== task);
+    this.taskListObs.next(list);
   }
 
   done(task: Task) {
-    this.donetask.push(task);
-    this.remove(task);
-    this.taskDoneObs.next(this.donetask);
+    task.end = new Date().toLocaleString();
+    task.isDone = true;
+    const list = this.taskListObs.getValue();
+    this.taskListObs.next(list);
+    // this.donetask.push(task);
+    // this.remove(task);
+    // this.taskDoneObs.next(this.donetask);
   }
 
-  receiveTask(task: Task) {
-    this.taskList.push(task);
-  }
+  // // receiveTask(task: Task) {
+  // //   // .taskList.push(task);
+  // // }
 
   getTaskListObs(): Observable<Array<Task>> {
     return this.taskListObs.asObservable();
   }
 
-  getTaskDoneObs(): Observable<Array<Task>> {
-    return this.taskDoneObs.asObservable();
+  // getTaskDoneObs(): Observable<Array<Task>> {
+  //   return this.taskDoneObs.asObservable();
+  // }
+
+  savetasksInDb() {
+    this.httpService.addTasks(this.taskListObs.getValue());
   }
 }
 

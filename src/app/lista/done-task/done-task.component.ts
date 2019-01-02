@@ -10,8 +10,8 @@ import { strictEqual } from 'assert';
 export class DoneTaskComponent implements OnInit {
   donetask = [];
   constructor(private taskService: TaskService) {
-    taskService.getTaskDoneObs().subscribe( tasks => {
-      this.donetask = tasks;
+    taskService.getTaskListObs().subscribe( tasks => {
+      this.donetask = tasks.filter(t => t.isDone === true);
     });
   }
 
